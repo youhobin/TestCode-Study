@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sample.cafekiosk.spring.api.controller.product.dto.request.ProductCreateRequest;
+import sample.cafekiosk.spring.api.service.product.request.ProductCreateServiceRequest;
 import sample.cafekiosk.spring.api.service.product.response.ProductResponse;
 import sample.cafekiosk.spring.domain.product.Product;
 import sample.cafekiosk.spring.domain.product.ProductRepository;
@@ -30,7 +31,7 @@ public class ProductService {
     // 동시성 이슈 / productNumber에 유니크 제약조건을 걸고 같은 번호가 등록되었을때 재시도 하는 방법이 있을 수 있다.
     // UUID 같은 값을 활용하면 동시성 문제를 풀 수 있다. (한 번에 많이 등록된다하면)
     @Transactional
-    public ProductResponse createProduct(ProductCreateRequest request) {
+    public ProductResponse createProduct(ProductCreateServiceRequest request) {
         String nextProductNumber = createNextProductNumber();
 
         Product product = request.toEntity(nextProductNumber);
