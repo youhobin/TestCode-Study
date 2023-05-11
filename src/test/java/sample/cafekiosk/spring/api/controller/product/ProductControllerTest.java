@@ -29,6 +29,7 @@ class ProductControllerTest extends ControllerTestSupport {
     @Test
     void createProduct() throws Exception {
         // given
+        // builder 의 경우 테스트에서만 사용됨.
         ProductCreateRequest request = ProductCreateRequest.builder()
                 .type(ProductType.HANDMADE)
                 .sellingStatus(ProductSellingStatus.SELLING)
