@@ -173,7 +173,7 @@ class OrderServiceTest {
 
         Stock stock1 = Stock.create("001", 2);
         Stock stock2 = Stock.create("002", 1);
-        stock1.deductQuantity(1); // todo
+        stock1.deductQuantity(1); // todo // 다른 행위를 끌어다 씀. -> given 환경에서 맥락을 한번 더 생각해야함.
         stockRepository.saveAll(List.of(stock1, stock2));
 
         OrderCreateServiceRequest request = OrderCreateServiceRequest.builder()
