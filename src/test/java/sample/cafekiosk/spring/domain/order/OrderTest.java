@@ -51,6 +51,7 @@ class OrderTest {
     @Test
     void registeredDateTime() {
         // given
+        // 의식적으로 현재 시간을 안 쓰는 것도 괜찮다. 점점 프로젝트 내에서 번지게 됨.
         LocalDateTime registeredDateTime = LocalDateTime.now();
         List<Product> products = List.of(
                 createProduct("001", 1000),
