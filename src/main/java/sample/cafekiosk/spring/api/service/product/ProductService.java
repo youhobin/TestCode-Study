@@ -27,12 +27,13 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductNumberFactory productNumberFactory;
 
     // 동시성 이슈 / productNumber에 유니크 제약조건을 걸고 같은 번호가 등록되었을때 재시도 하는 방법이 있을 수 있다.
     // UUID 같은 값을 활용하면 동시성 문제를 풀 수 있다. (한 번에 많이 등록된다하면)
     @Transactional
     public ProductResponse createProduct(ProductCreateServiceRequest request) {
-        String nextProductNumber = createNextProductNumber();
+        String nextProductNumber = productNumberFactory.createNextProductNumber();
 
         Product product = request.toEntity(nextProductNumber);
         Product savedProduct = productRepository.save(product);
@@ -48,16 +49,5 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    private String createNextProductNumber() {
-        String latestProductNumber = productRepository.findLatestProductNumber();
-        if (latestProductNumber == null) {
-            return "001";
-        }
 
-        int latestProductNumberInt = Integer.parseInt(latestProductNumber);
-        int newtProductNumberInt = latestProductNumberInt + 1;
-
-        // 9 -> 009
-        return String.format("%03d", newtProductNumberInt);
-    }
 }
