@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 import sample.cafekiosk.spring.api.controller.order.request.OrderCreateRequest;
 import sample.cafekiosk.spring.api.service.order.request.OrderCreateServiceRequest;
 import sample.cafekiosk.spring.api.service.order.response.OrderResponse;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.*;
 import static sample.cafekiosk.spring.domain.product.ProductSellingStatus.*;
 import static sample.cafekiosk.spring.domain.product.ProductType.*;
 
+@Transactional
 @ActiveProfiles("test")
 // 테스트에서 Transactional 사용 시 Production 코드에 Transactional 이 설정 되어있는 거를 잘 확인해야한다.
 //@Transactional
@@ -48,10 +50,15 @@ class OrderServiceTest {
 
     @AfterEach
     void tearDown() {
+        // orderProduct와 product의 순서가 바뀌면 에러가 발생함. FK로 있기 때문에.
         orderProductRepository.deleteAllInBatch();
         productRepository.deleteAllInBatch();
         orderRepository.deleteAllInBatch();
         stockRepository.deleteAllInBatch();
+
+        // deleteAll 과 deleteAllInBatch
+        // deleteAllInBatch 는 테이블을 깔끔하게 지우나 순서를 지켜줘야한다.
+        // deleteAll 은 order를 지우면서 orderProduct도 같이 지움. 하지만 건당 delete를 진행.
     }
 
     @DisplayName("주문 번호 리스트를 받아 주문을 생성한다.")
