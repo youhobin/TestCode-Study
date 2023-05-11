@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
+import sample.cafekiosk.spring.IntegrationTestSupport;
 
 import java.util.List;
 
@@ -15,10 +17,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static sample.cafekiosk.spring.domain.product.ProductSellingStatus.*;
 import static sample.cafekiosk.spring.domain.product.ProductType.HANDMADE;
 
-@ActiveProfiles("test") // profile 지정
-//@SpringBootTest
-@DataJpaTest
-public class ProductRepositoryTest {
+//@ActiveProfiles("test") // profile 지정
+////@SpringBootTest
+//@DataJpaTest
+@Transactional
+public class ProductRepositoryTest extends IntegrationTestSupport {
 
     @Autowired
     private ProductRepository productRepository;
